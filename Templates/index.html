@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Blogging System</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+
+<div class="navbar">
+    <a href="/">Home</a>
+    <a href="/blogs-page">Blogs</a>
+    <a href="/create-blog">Create Blog</a>
+    <a href="/login">Login</a>
+    <a href="/register">Register</a>
+    <a href="#" onclick="logout()">Logout</a>
+</div>
+
+<script>
+function logout(){
+    localStorage.removeItem("token");
+    alert("Logged out");
+    window.location.href="/login";
+}
+</script>
+
+
+<div class="container">
+    <h2>Welcome to Blogging System</h2>
+</div>
+
+<script>
+function logout(){
+    localStorage.removeItem("token");
+    window.location.href = "/login";
+}
+</script>
+
+</body>
+</html>

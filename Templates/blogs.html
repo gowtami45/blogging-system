@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Blogs</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+
+<!-- NAVBAR -->
+<div class="navbar">
+    <a href="/">Home</a>
+    <a href="/create-blog">Create Blog</a>
+    <a href="#" onclick="logout()">Logout</a>
+</div>
+
+<h2 style="text-align:center">All Blogs</h2>
+
+<!-- BLOGS CONTAINER -->
+<div id="blogs"></div>
+
+<script>
+/* ---------------- LOAD BLOGS ---------------- */
+async function loadBlogs(){
+    let res = await fetch("/api/blogs");
+    let blogs = await res.json();
+
+    let html = "";
+
+    blogs.forEach(b => {
+        html += `
+        <div class="blog">
+            <h3>${b.title}</h3>
+            <p>${b.content}</p>
+            <small>Author: ${b.author}</small><br><br>
+
+            <button onclick="deleteBlog(${b.id})"
+                    style="background:red;color:white;margin-bottom:10px;">
+                Delete Blog
+            </button>
+
+            <div class="comments" id="comments-${b.id}"></div>
+
+            <input id="comment-${b.id}" placeholder="Add comment">
+            <button onclick="addComment(${b.id})">Comment</button>
+        </div>
+        `;
+    });
+
+    /* Render blogs first */
+    document.getElementById("blogs").innerHTML = html;
+
+    /* Load comments after rendering */
+    blogs.forEach(b => loadComments(b.id));
+}
+
+/* ---------------- LOAD COMMENTS ---------------- */
+async function loadComments(blogId){
+    let res = await fetch(`/api/comments/${blogId}`);
+    let comments = await res.json();
+
+    let html = "<h4>Comments</h4>";
+
+    if(comments.length === 0){
+        html += "<p>No comments yet</p>";
+    }
+
+    comments.forEach(c => {
+        html += `
+        <p>
+            • ${c.comment}
+            <button onclick="deleteComment(${c.id}, ${blogId})"
+                    style="background:red;color:white;font-size:12px;">
+                X
+            </button>
+        </p>`;
+    });
+
+    document.getElementById(`comments-${blogId}`).innerHTML = html;
+}
+
+/* ---------------- ADD COMMENT ---------------- */
+async function addComment(blogId){
+    let commentText = document.getElementById(`comment-${blogId}`).value;
+
+    if(!commentText){
+        alert("Enter comment");
+        return;
+    }
+
+    await fetch("/api/comment",{
+        method:"POST",
+        headers:{ "Content-Type":"application/json" },
+        body:JSON.stringify({
+            comment: commentText,
+            blog_id: blogId
+        })
+    });
+
+    document.getElementById(`comment-${blogId}`).value="";
+    loadComments(blogId);
+}
+
+/* ---------------- DELETE BLOG ---------------- */
+async function deleteBlog(blogId){
+    if(!confirm("Delete this blog?")) return;
+
+    await fetch(`/api/blogs/${blogId}`, { method:"DELETE" });
+    loadBlogs();
+}
+
+/* ---------------- DELETE COMMENT ---------------- */
+async function deleteComment(commentId, blogId){
+    await fetch(`/api/comment/${commentId}`, { method:"DELETE" });
+    loadComments(blogId);
+}
+
+/* ---------------- LOGOUT ---------------- */
+function logout(){
+    localStorage.removeItem("token");
+    window.location.href="/login";
+}
+
+/* 🚀 INIT */
+loadBlogs();
+</script>
+
+</body>
+</html>

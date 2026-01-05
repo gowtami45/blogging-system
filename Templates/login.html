@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Login</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+
+<div class="navbar">
+    <a href="/">Home</a>
+    <a href="/register">Register</a>
+</div>
+
+<div class="container">
+    <h2>Welcome Back</h2>
+
+    <form id="login">
+        <input id="username" placeholder="Username" required>
+        <input id="password" type="password" placeholder="Password" required>
+        <button>Login</button>
+    </form>
+
+    <div class="link">
+        <a href="/register">Create an account</a>
+    </div>
+</div>
+
+<script>
+login.onsubmit = async e => {
+e.preventDefault();
+
+let res = await fetch("/api/login",{
+method:"POST",
+headers:{ "Content-Type":"application/json" },
+body:JSON.stringify({
+username: username.value,
+password: password.value
+})
+});
+
+let data = await res.json();
+if(res.status !== 200){ alert(data.error); return; }
+
+localStorage.setItem("token", data.token);
+window.location.href="/blogs-page";
+}
+</script>
+
+</body>
+</html>

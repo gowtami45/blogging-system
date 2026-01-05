@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Create Blog</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+
+<div class="navbar">
+    <a href="/">Home</a>
+    <a href="/blogs-page">Blogs</a>
+    <a href="#" onclick="logout()">Logout</a>
+</div>
+
+<div class="container">
+    <h2>Create Blog</h2>
+
+    <form id="blogForm">
+        <input type="text" id="title" placeholder="Blog Title" required>
+        <textarea id="content" placeholder="Blog Content" required></textarea>
+        <button type="submit">Post Blog</button>
+    </form>
+</div>
+
+<script>
+document.getElementById("blogForm").addEventListener("submit", async function(e){
+    e.preventDefault();
+
+    console.log("FORM SUBMITTED");
+
+    let token = localStorage.getItem("token");
+    console.log("TOKEN:", token);
+
+    if(!token){
+        alert("Please login again");
+        window.location.href="/login";
+        return;
+    }
+
+    let res = await fetch("/api/blogs", {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json",
+            "Authorization": "Bearer " + token
+        },
+        body: JSON.stringify({
+            title: document.getElementById("title").value,
+            content: document.getElementById("content").value
+        })
+    });
+
+    let data = await res.json();
+    console.log("API RESPONSE:", data);
+
+    if(res.status !== 200){
+        alert(data.error || "Failed to create blog");
+        return;
+    }
+
+    alert("Blog Created Successfully");
+    window.location.href = "/blogs-page";
+});
+</script>
+
+<script>
+function logout(){
+    localStorage.removeItem("token");
+    window.location.href="/login";
+}
+</script>
+
+</body>
+</html>

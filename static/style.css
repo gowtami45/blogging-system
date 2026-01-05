@@ -1,0 +1,130 @@
+body {
+    font-family: 'Segoe UI', Tahoma, sans-serif;
+    background: linear-gradient(120deg, #74ebd5, #acb6e5);
+    margin: 0;
+    min-height: 100vh;
+}
+
+/* ---------- NAVBAR ---------- */
+.navbar {
+    background: #222;
+    padding: 14px;
+    display: flex;
+    justify-content: center;
+    gap: 25px;
+}
+
+.navbar a {
+    color: #fff;
+    text-decoration: none;
+    font-weight: 600;
+    font-size: 15px;
+}
+
+.navbar a:hover {
+    color: #74ebd5;
+}
+
+/* ---------- CARD CONTAINER ---------- */
+.container {
+    width: 380px;
+    background: white;
+    margin: 80px auto;
+    padding: 30px;
+    border-radius: 12px;
+    box-shadow: 0 15px 25px rgba(0,0,0,0.15);
+    animation: fadeIn 0.6s ease-in;
+}
+
+@keyframes fadeIn {
+    from {opacity:0; transform: translateY(10px);}
+    to {opacity:1; transform: translateY(0);}
+}
+
+h2 {
+    text-align: center;
+    color: #333;
+}
+
+/* ---------- INPUTS ---------- */
+input, textarea {
+    width: 100%;
+    padding: 12px;
+    margin-top: 12px;
+    border-radius: 6px;
+    border: 1px solid #ccc;
+    font-size: 14px;
+}
+
+textarea {
+    height: 120px;
+}
+
+/* ---------- BUTTON ---------- */
+button {
+    width: 100%;
+    margin-top: 18px;
+    padding: 12px;
+    background: #007bff;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    font-size: 15px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+button:hover {
+    background: #0056b3;
+}
+
+/* ---------- LINKS ---------- */
+.link {
+    text-align: center;
+    margin-top: 15px;
+}
+
+.link a {
+    text-decoration: none;
+    color: #007bff;
+    font-weight: 600;
+}
+
+/* ---------- BLOG CARD ---------- */
+.blog {
+    background: white;
+    width: 70%;
+    margin: 25px auto;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 10px 15px rgba(0,0,0,0.12);
+}
+
+.blog h3 {
+    margin: 0;
+    color: #333;
+}
+
+.blog small {
+    color: #777;
+}
+.comments {
+    margin-top: 10px;
+    padding-left: 10px;
+    border-left: 3px solid #007bff;
+}
+
+.comments p {
+    font-size: 14px;
+    color: #333;
+}
+.comments small {
+    color: #777;
+    font-size: 12px;
+}
+/* ---------- RESPONSIVE ---------- */
+@media (max-width: 768px) {
+    .container, .blog {
+        width: 90%;
+    }
+}

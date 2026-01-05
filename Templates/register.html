@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Register</title>
+        <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+
+</head>
+<body>
+   <div class="navbar">
+    <a href="/">Home</a>
+    <a href="/blogs-page">Blogs</a>
+    <a href="/create-blog">Create Blog</a>
+    <a href="/login">Login</a>
+    <a href="/register">Register</a>
+    <a href="#" onclick="logout()">Logout</a>
+</div>
+
+<script>
+function logout(){
+    localStorage.removeItem("token");
+    alert("Logged out");
+    window.location.href="/login";
+}
+</script>
+
+<h2>Register</h2>
+<form id="regForm">
+    Username: <input type="text" id="username"><br>
+    Password: <input type="password" id="password"><br>
+    <button type="submit">Register</button>
+</form>
+
+<script>
+document.getElementById("regForm").onsubmit = async function(e){
+    e.preventDefault();
+    await fetch("/api/register",{
+        method:"POST",
+        headers:{ "Content-Type":"application/json" },
+        body:JSON.stringify({
+            username:username.value,
+            password:password.value
+        })
+    });
+    alert("Registered Successfully");
+}
+</script>
+</body>
+</html>
